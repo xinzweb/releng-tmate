@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: tmate
+  labels:
+    app: tmate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tmate
+  template:
+    metadata:
+      labels:
+        app: tmate
+    spec:
+      containers:
+        - name: tmate
+          image: baotingfang/tmate-ssh-server:2.3.0
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
+          env:
+            - name: SSH_HOSTNAME
+              value: "LATER_UPDATE"
+            - name: SSH_PORT_LISTEN
+              value: "2222"
