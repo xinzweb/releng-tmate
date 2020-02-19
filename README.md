@@ -26,7 +26,7 @@ sudo apt-get install -y kubectl
 
 ```bash
 # create a single node cluster
-$ gcloud container clusters create --num-nodes=1 gp-releng-cluster
+gcloud container clusters create --num-nodes=1 --zone=asia-northeast1 gp-releng-cluster-single-node-apj
 ```
 
 ## Access the GKE cluster
@@ -35,7 +35,7 @@ Getting K8s cluster configuration from GKE:
 
 ```bash
 # update your kubectl config
-gcloud container clusters get-credentials gp-releng-cluster
+gcloud container clusters get-credentials gp-releng-cluster-single-node-apj
 
 # query the cluster information
 kubectl cluster-info
