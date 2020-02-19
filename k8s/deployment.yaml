@@ -5,7 +5,7 @@ metadata:
   labels:
     app: tmate
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: tmate
@@ -15,13 +15,23 @@ spec:
         app: tmate
     spec:
       containers:
-        - name: tmate
-          image: baotingfang/tmate-ssh-server:2.3.0
-          imagePullPolicy: Always
-          securityContext:
-            privileged: true
-          env:
-            - name: SSH_HOSTNAME
-              value: "LATER_UPDATE"
-            - name: SSH_PORT_LISTEN
-              value: "2222"
+      - name: tmate
+        image: tmate/tmate-ssh-server
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        env:
+        - name: SSH_KEYS_PATH
+          value: "/etc/tmate/keys"
+        - name: SSH_HOSTNAME
+          value: "tmate-ssh-server"
+        - name: SSH_PORT_LISTEN
+          value: "2222"
+        volumeMounts:
+        - name: tmate-keys
+          mountPath: "/etc/tmate/keys"
+          readOnly: true
+      volumes:
+      - name: tmate-keys
+        secret:
+          secretName: tmate-keys

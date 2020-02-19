@@ -12,7 +12,6 @@ gen_key() {
   SIG=$(ssh-keygen -l -E SHA256 -f $key.pub | cut -d ' ' -f 2)
 }
 
-curdir=$(pwd)
 cd /etc/tmate/
 mkdir -p keys
 gen_key rsa
@@ -20,11 +19,9 @@ RSA_SIG=$SIG
 gen_key ed25519
 ED25519_SIG=$SIG
 
-
-echo "You may use the following settings this in your .tmate.conf:"
-echo ""
-echo "set -g tmate-server-host localhost"
-echo "set -g tmate-server-port 2222"
-echo "set -g tmate-server-rsa-fingerprint \"$RSA_SIG\""
-echo "set -g tmate-server-ed25519-fingerprint \"$ED25519_SIG\""
-cd ${curdir}
+cat <<EOF >/etc/tmate/keys/tmate.conf
+set -g tmate-server-host localhost
+set -g tmate-server-port 2222
+set -g tmate-server-rsa-fingerprint "${RSA_SIG}"
+set -g tmate-server-ed25519-fingerprint "${ED25519_SIG}"
+EOF
